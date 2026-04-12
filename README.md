@@ -399,3 +399,18 @@ This example assumes two secrets to be available to authenticate against Docker 
 ## License
 
 The Docker Scout CLI is licensed under the Terms and Conditions of the [Docker Subscription Service Agreement](https://www.docker.com/legal/docker-subscription-service-agreement/). 
+
+
+## Despliegue continuo
+
+Cuando se publica un release, GitHub Actions construye y sube la imagen del proyecto a GHCR.
+
+### Flujo
+1. Se crea el release.
+2. Se ejecuta el pipeline de despliegue.
+3. La imagen se construye con Docker.
+4. La imagen se publica en el registro.
+
+## Supervisión continua
+
+El estado del proyecto se revisa mediante los logs de GitHub Actions y los resultados de los workflows automáticos.
