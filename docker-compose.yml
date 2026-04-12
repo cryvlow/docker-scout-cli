@@ -1,0 +1,8 @@
+services:
+  scout-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: scout-cli:local
+    container_name: scout-cli
+    command: ["/bin/sh", "-lc", "./install.sh -h || true"]
