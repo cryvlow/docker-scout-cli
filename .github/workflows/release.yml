@@ -1,34 +1,40 @@
-name: release
+name: Release
 
 on:
   push:
     tags:
-      - 'v*.*.*'
-  workflow_dispatch:
-  workflow_call:
-    inputs:
-      tag:
-        required: true
-        type: string
-        description: "The tag to release"
+      - "v*.*.*"
+
+permissions:
+  contents: write
+  packages: write
 
 jobs:
-  release:
+  test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    env:
-      RELEASE_REF: ${{ github.event_name == 'push' && github.ref_name || inputs.tag }}
     steps:
-      - name: Check out code
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Run smoke tests
+        run: |
+          chmod +x tests/smoke_test.sh
+          tests/smoke_test.sh
+
+  build-and-release:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create release artifact
+        run: |
+          mkdir -p dist
+          tar -czf dist/scout-cli-source.tar.gz README.md install.sh docs
+
+      - name: Upload release artifact
+        uses: softprops/action-gh-release@v2
         with:
-          fetch-depth: 0
-          ref: ${{ env.RELEASE_REF }}
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: true
-          tag_name: ${{ env.RELEASE_REF }}
-          files: |
-            dist/docker-scout_*
+          files: dist/scout-cli-source.tar.gz
