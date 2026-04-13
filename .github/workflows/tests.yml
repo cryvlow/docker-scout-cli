@@ -18,13 +18,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Give execute permission
-        run: chmod +x tests/smoke_test.sh
+        run: |
+          chmod +x install.sh
+          chmod +x tests/*.sh
 
       - name: Run all tests
         run: |
-          chmod +x tests/*.sh
           for test in tests/*.sh; do
+            echo "========================="
             echo "Running $test"
+            echo "========================="
             bash "$test"
           done
 
