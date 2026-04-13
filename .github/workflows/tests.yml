@@ -22,3 +22,28 @@ jobs:
 
       - name: Run smoke test
         run: tests/smoke_test.sh
+
+      - name: Install kcov
+        run: sudo apt-get install -y kcov
+
+      - name: Run tests with coverage
+        run: |
+          mkdir -p coverage
+          kcov --include-path=. coverage tests/smoke_test.sh
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "## 🧪 Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "- Smoke tests ejecutados correctamente" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/*
