@@ -415,4 +415,5 @@ Cuando se publica un release, GitHub Actions construye y sube la imagen del proy
 
 El estado del proyecto se revisa mediante los logs de GitHub Actions y los resultados de los workflows automáticos.
 
+# Reporte de metricas
 ![Coverage](https://codecov.io/gh/cryvlow/docker-scout-cli/branch/main/graph/badge.svg)
