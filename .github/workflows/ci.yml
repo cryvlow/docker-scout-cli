@@ -32,3 +32,12 @@ jobs:
       - name: Smoke test install script help
         run: |
           ./install.sh --help || true
+
+      - name: Check formatting
+        run: |
+          sudo apt-get install -y shfmt
+          shfmt -d .
+
+      - name: Lint all shell scripts
+        run: |
+          shellcheck tests/*.sh install.sh

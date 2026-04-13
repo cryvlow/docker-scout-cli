@@ -20,8 +20,13 @@ jobs:
       - name: Give execute permission
         run: chmod +x tests/smoke_test.sh
 
-      - name: Run smoke test
-        run: tests/smoke_test.sh
+      - name: Run all tests
+        run: |
+          chmod +x tests/*.sh
+          for test in tests/*.sh; do
+            echo "Running $test"
+            bash "$test"
+          done
 
       - name: Install kcov
         run: |
@@ -38,7 +43,9 @@ jobs:
       - name: Run tests with coverage
         run: |
           mkdir -p coverage
-          kcov --include-path=. coverage tests/smoke_test.sh
+          for test in tests/*.sh; do
+            kcov --include-path=. coverage "$(pwd)/$test"
+          done
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
