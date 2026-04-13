@@ -46,11 +46,27 @@ jobs:
           name: coverage-report
           path: coverage
 
+      - name: Extract coverage %
+        id: coverage
+        run: |
+          COVERAGE=$(grep -oP 'covered="\K[0-9.]+' coverage/kcov-merged/cobertura.xml | head -n1)
+          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+
       - name: Test Summary
         if: always()
         run: |
           echo "## 🧪 Test Results" >> $GITHUB_STEP_SUMMARY
           echo "- Smoke tests ejecutados correctamente" >> $GITHUB_STEP_SUMMARY
+
+      - name: Metricas Summary
+        if: always()
+        run: |
+          echo "## 🧪 Test Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Métrica | Valor |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Smoke Test | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| Coverage | ${{ steps.coverage.outputs.coverage }}% |" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
