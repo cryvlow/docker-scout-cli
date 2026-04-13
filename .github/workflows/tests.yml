@@ -24,7 +24,16 @@ jobs:
         run: tests/smoke_test.sh
 
       - name: Install kcov
-        run: sudo apt-get install -y kcov
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake make gcc g++ libcurl4-openssl-dev libdw-dev libiberty-dev zlib1g-dev
+
+          git clone https://github.com/SimonKagstrom/kcov.git
+          cd kcov
+          mkdir build && cd build
+          cmake ..
+          make
+          sudo make install
 
       - name: Run tests with coverage
         run: |
