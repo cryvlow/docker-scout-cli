@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Test: manejo de errores"
+echo "Test: manejo de errores (flags inválidos)"
 
-if ./install.sh --fake-option 2>/dev/null; then
-  echo "❌ Falló: no detectó opción inválida"
-  exit 1
+OUTPUT=$(./install.sh --fake-option 2>&1 || true)
+
+if [[ "$OUTPUT" == *"Usage"* ]]; then
+  echo "✅ Manejo correcto (muestra ayuda)"
 else
-  echo "✅ Manejo de error correcto"
+  echo "❌ No manejó correctamente la opción inválida"
+  exit 1
 fi
