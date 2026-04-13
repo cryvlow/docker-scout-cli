@@ -46,13 +46,6 @@ jobs:
           name: coverage-report
           path: coverage
 
-      - name: Extract coverage %
-        id: coverage
-        run: |
-          RATE=$(grep -oP 'line-rate="\K[0-9.]+' coverage/kcov-merged/cobertura.xml | head -n1)
-          PERCENT=$(awk "BEGIN {printf \"%.2f\", $RATE * 100}")
-          echo "coverage=$PERCENT" >> $GITHUB_OUTPUT
-
       - name: Test Summary
         if: always()
         run: |
@@ -67,7 +60,6 @@ jobs:
           echo "| Métrica | Valor |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
           echo "| Smoke Test | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-          echo "| Coverage | ${{ steps.coverage.outputs.coverage }}% |" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
