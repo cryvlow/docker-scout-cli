@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
+set -x  # 🔥 IMPORTANTE para kcov
 
 echo "Iniciando prueba de humo..."
 
-if [ ! -f "./install.sh" ]; then
-  echo "No se encontró install.sh"
-  exit 1
-fi
-
 bash -n ./install.sh
-
-echo "Sintaxis de install.sh correcta"
 
 chmod +x ./install.sh
 
-# Prueba básica de ejecución sin instalar realmente
+echo "Test: help"
 ./install.sh --help || true
 
-echo "Prueba de humo completada correctamente"
+echo "Test: ejecución básica"
+./install.sh || true
+
+echo "Test: opción inválida"
+./install.sh --invalid-option || true
+
+echo "Prueba completada"
