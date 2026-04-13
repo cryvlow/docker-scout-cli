@@ -49,8 +49,9 @@ jobs:
       - name: Extract coverage %
         id: coverage
         run: |
-          COVERAGE=$(grep -oP 'covered="\K[0-9.]+' coverage/kcov-merged/cobertura.xml | head -n1)
-          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+          RATE=$(grep -oP 'line-rate="\K[0-9.]+' coverage/kcov-merged/cobertura.xml | head -n1)
+          PERCENT=$(awk "BEGIN {printf \"%.2f\", $RATE * 100}")
+          echo "coverage=$PERCENT" >> $GITHUB_OUTPUT
 
       - name: Test Summary
         if: always()
