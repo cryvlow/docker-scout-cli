@@ -17,4 +17,4 @@ chmod +x ./install.sh
 # Prueba básica de ejecución sin instalar realmente
 ./install.sh --help || true
 
-echo "Prueba de humo completada correctamente"
+echo "Prueba de humo completada correctamente 2"
