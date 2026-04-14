@@ -13,7 +13,14 @@ jobs:
   smoke-tests:
     runs-on: ubuntu-latest
 
-    step
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Give execute permission
+        run: |
+          chmod +x install.sh
+          chmod +x tests/*.sh
 
       - name: Run all tests
         run: |
